@@ -1,0 +1,123 @@
+/* Общие стили для страницы */
+body {
+    margin: 0;
+    padding: 0;
+    background: black;
+    color: #00FF00; /* Ярко-зеленый цвет текста */
+    font-family: 'Courier New', Courier, monospace;
+    height: 100vh;
+    overflow: hidden;
+    position: relative;
+}
+
+/* Canvas для анимированного фона */
+#matrix-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: -1;
+}
+
+/* Контейнер для содержимого чата */
+.chat-container {
+    position: relative;
+    z-index: 1;
+    padding: 20px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Заголовок чата */
+h1 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #00FF00;
+    text-shadow: 0 0 10px #00FF00;
+}
+
+/* Блок для сообщений */
+#messages {
+    flex: 1;
+    border: 2px solid #00FF00;
+    padding: 10px;
+    background: rgba(0, 0, 0, 0.8);
+    overflow-y: auto;
+    border-radius: 5px;
+    box-shadow: 0 0 10px #00FF00;
+}
+
+/* Отдельные сообщения */
+#messages div {
+    margin-bottom: 10px;
+    padding: 5px;
+    border-bottom: 1px solid #00FF00;
+}
+
+#messages div:last-child {
+    border-bottom: none;
+}
+
+/* Формы отправки сообщений */
+form {
+    margin-top: 10px;
+    display: flex;
+    align-items: center;
+}
+
+input[type="text"], input[type="file"] {
+    flex: 1;
+    padding: 10px;
+    border: 2px solid #00FF00;
+    background: rgba(0, 0, 0, 0.8);
+    color: #00FF00;
+    border-radius: 5px;
+    margin-right: 10px;
+    font-size: 16px;
+}
+
+button {
+    padding: 10px 20px;
+    background: #00FF00;
+    border: none;
+    border-radius: 5px;
+    color: black;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+button:hover {
+    background: #32CD32;
+}
+
+/* Аудио-плеер */
+audio {
+    width: 100%;
+    margin-top: 10px;
+}
+
+/* Кнопка записи */
+#recordButton {
+    background: #FF0000;
+    color: white;
+}
+
+#recordButton.recording {
+    background: #8B0000;
+}
+
+/* Скрытые формы и элементы */
+#recordedAudio, #voiceForm {
+    display: none;
+}
+
+/* Плавное появление элементов */
+.fade-in {
+    animation: fadeIn 1s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}

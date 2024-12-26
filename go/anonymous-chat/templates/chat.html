@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Чат - {{.Room}}</title>
+    <link rel="stylesheet" href="/static/css/styles.css">
+</head>
+<body>
+    <!-- Анимированный фон с Canvas -->
+    <canvas id="matrix-canvas"></canvas>
+
+    <!-- Контейнер чата -->
+    <div class="chat-container">
+        <h1>Комната: {{.Room}}</h1>
+        
+        <!-- Элементы для хранения комнаты и никнейма -->
+        <input type="hidden" id="room" value="{{.Room}}">
+        <input type="hidden" id="nickname" value="{{.Nickname}}">
+        
+        <!-- Блок для отображения сообщений -->
+        <div id="messages"></div>
+        
+        <!-- Форма для отправки текстовых сообщений -->
+        <form id="messageForm">
+            <input type="text" id="messageInput" autocomplete="off" placeholder="Введите сообщение" required>
+            <button type="submit">Отправить</button>
+        </form>
+
+        <!-- Кнопка для записи голосового сообщения -->
+        <button id="recordButton">Записать голосовое сообщение</button>
+        <audio id="recordedAudio" controls></audio>
+        <form id="voiceForm">
+            <button type="submit">Отправить голосовое сообщение</button>
+        </form>
+    
+        <!-- Форма для загрузки изображений -->
+        <form id="uploadImageForm" enctype="multipart/form-data">
+            <input type="file" id="imageInput" name="image" accept="image/*" required>
+            <button type="submit">Загрузить изображение</button>
+        </form>
+    
+        <!-- Форма для загрузки голосовых сообщений -->
+        <form id="uploadVoiceForm" enctype="multipart/form-data">
+            <input type="file" id="voiceInput" name="voice" accept="audio/*" required>
+            <button type="submit">Загрузить голосовое сообщение</button>
+        </form>
+    </div>
+
+    <!-- Подключение скрипта chat.js -->
+    <script src="/static/js/chat.js"></script>
+
+    <!-- Скрипт для анимации фона с Canvas -->
+    <script>
+        // Canvas для анимации Matrix
+        const canvas = document.getElementById('matrix-canvas');
+        const ctx = canvas.getContext('2d');
+
+        // Устанавливаем размер Canvas на весь экран
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        // Символы для анимации
+        const matrix = "ABCDEFGHIJKLMNOPQRSTUVWXYZ123456789@#$%^&*()*&^%";
+        const fontSize = 16;
+        const columns = canvas.width / fontSize; // Количество столбцов
+        const drops = new Array(Math.floor(columns)).fill(1); // Начальные позиции падения
+
+        // Цвет и прозрачность символов
+        ctx.fillStyle = "#0F0"; // Зеленый цвет
+        ctx.font = `${fontSize}px monospace`;
+
+        // Функция анимации
+        function draw() {
+            // Черный полупрозрачный прямоугольник для эффекта "стирания"
+            ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            // Зеленый цвет для символов
+            ctx.fillStyle = "#0F0";
+
+            for (let i = 0; i < drops.length; i++) {
+                // Выбираем случайный символ
+                const text = matrix.charAt(Math.floor(Math.random() * matrix.length));
+                // Отображаем символ
+                ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+
+                // Случайно сбрасываем позицию для создания эффекта "падающих" символов
+                if (drops[i] * fontSize > canvas.height || Math.random() > 0.975) {
+                    drops[i] = 0;
+                }
+
+                // Увеличиваем координату Y для следующего символа
+                drops[i]++;
+            }
+        }
+
+        // Запускаем анимацию
+        setInterval(draw, 33); // ~30 FPS
+
+        // Обновляем размер Canvas при изменении размера окна
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            // Пересчитываем количество столбцов и сбрасываем позиции падения
+            const newColumns = canvas.width / fontSize;
+            drops.length = Math.floor(newColumns);
+            for (let i = 0; i < drops.length; i++) {
+                drops[i] = Math.floor(Math.random() * canvas.height / fontSize);
+            }
+        });
+    </script>
+</body>
+</html>

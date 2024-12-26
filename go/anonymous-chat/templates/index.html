@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Анонимный Чат</title>
+    <link rel="stylesheet" href="/static/css/styles.css">
+</head>
+<body>
+    <h1>Добро пожаловать в Анонимный Чат</h1>
+    <form method="POST" action="/">
+        <label for="nickname">Ник:</label>
+        <input type="text" id="nickname" name="nickname" required><br><br>
+
+        <label for="room">Комната:</label>
+        <input list="existingRooms" id="room" name="room" required>
+        <datalist id="existingRooms">
+            {{range .Rooms}}
+                <option value="{{.}}">{{.}}</option>
+            {{end}}
+        </datalist><br><br>
+
+        <button type="submit">Войти</button>
+    </form>
+</body>
+</html>
